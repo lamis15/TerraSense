@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TerraSense – Recommandation de Cultures</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSS principal pour la page d'accueil TerraSense -->
+    <link rel="stylesheet" href="/static/index.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="navbar">
+          <div class="brand">
+            <div class="brand-icon">
+              <img
+                src="/images-agricultures/logo.png"
+                alt="Logo TerraSense"
+                style="width: 32px; height: 32px; border-radius: 999px"
+              />
+            </div>
+            <div>
+              <div class="brand-text-main">TerraSense</div>
+              <div class="brand-text-sub">Intelligence pour la Terre</div>
+            </div>
+          </div>
+          <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/agriculture" class="nav-link">Agriculture</a>
+            <a href="/air" class="nav-link">Air</a>
+            <a href="#" class="nav-link">About Us</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero" id="home">
+          <div class="hero-card">
+            <div class="landscape-illustration">
+              <div class="hills">
+                <div class="hill hill-1"></div>
+                <div class="hill hill-2"></div>
+              </div>
+              <div class="trees">
+                <div class="tree tree-1">
+                  <div class="tree-trunk"></div>
+                  <div class="tree-leaves"></div>
+                </div>
+                <div class="tree tree-2">
+                  <div class="tree-trunk"></div>
+                  <div class="tree-leaves"></div>
+                </div>
+                <div class="tree tree-3">
+                  <div class="tree-trunk"></div>
+                  <div class="tree-leaves"></div>
+                </div>
+              </div>
+              <div class="clouds"></div>
+            </div>
+            <div class="hero-content">
+              <h1>
+                TerraSense
+              </h1>
+              <p class="tagline">
+                Humans need to address environmental issues because they are no longer a problem for one society but a global issue. If the environment crumbles, then the possibility of our survival decreases. We need to adapt the concept of sustainability.
+              </p>
+              <button
+                type="button"
+                class="btn-primary"
+                onclick="window.location.href='/agriculture'"
+              >
+                more
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="domains" aria-label="Autres domaines TerraSense">
+          <article class="domain-card" id="air">
+            <div class="domain-card-content">
+              <h3>Qualité de l'air</h3>
+              <p>
+                Surveillez la qualité de l'air autour de vous grâce à nos modèles de prédiction. 
+                Obtenez des indices simples et des conseils adaptés pour protéger votre santé.
+              </p>
+              <button
+                type="button"
+                class="btn-primary"
+                onclick="window.location.href='/air'"
+                style="background: var(--gradient-blue);"
+              >
+                Explorer
+              </button>
+            </div>
+          </article>
+
+          <article class="domain-card" id="water">
+            <div class="domain-card-content">
+              <h3>Qualité de l'eau</h3>
+              <p>
+                Protégez les ressources en eau avec des analyses de qualité basées sur des données 
+                scientifiques. Suivez l'évolution de la qualité des eaux souterraines et de surface.
+              </p>
+              <button
+                type="button"
+                class="btn-primary"
+                style="background: var(--gradient-teal);"
+              >
+                Explorer
+              </button>
+            </div>
+          </article>
+        </section>
+      </main>
+
+      <footer>
+        TerraSense – Projet de modélisation environnementale (Agriculture, Air,
+        Eau). Interface conçue pour un thème vert et écoresponsable. 🌍
+      </footer>
+    </div>
+
+    <script>
+      // Navigation douce entre les 3 domaines (sur la page d'accueil uniquement)
+      document.querySelectorAll(".nav-link[data-target]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const targetId = btn.getAttribute("data-target");
+          const section = document.getElementById(targetId);
+          if (!section) return;
+
+          document
+            .querySelectorAll(".nav-link[data-target]")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+
+          window.scrollTo({
+            top: section.offsetTop - 80,
+            behavior: "smooth",
+          });
+        });
+      });
+    </script>
+  </body>
+  </html>
+
+

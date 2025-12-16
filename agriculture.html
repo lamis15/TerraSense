@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TerraSense – Module Agriculture</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- CSS spécifique au module Agriculture -->
+    <link rel="stylesheet" href="/static/agriculture.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="navbar">
+          <div class="brand" onclick="window.location.href='/'">
+            <div class="brand-icon">
+              <img
+                src="/images-agricultures/logo.png"
+                alt="Logo TerraSense"
+                style="width: 32px; height: 32px; border-radius: 999px"
+              />
+            </div>
+            <div>
+              <div class="brand-text-main">TerraSense</div>
+              <div class="brand-text-sub">Module Agriculture</div>
+            </div>
+          </div>
+          <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/agriculture" class="nav-link">Agriculture</a>
+            <a href="/air" class="nav-link">Air</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <h1>
+          Quelle culture pour
+          <span>ma parcelle&nbsp;?</span>
+        </h1>
+        <p class="tagline">
+          Indiquez quelques paramètres simples sur votre sol et votre climat.
+          Le modèle de recommandation vous propose une culture adaptée et donne
+          un niveau de confiance. L'objectif est d'être lisible pour un
+          agriculteur, sans jargon technique.
+        </p>
+
+        <div class="layout">
+          <!-- Carte 1 : Guide pédagogique par étapes (sans saisie) -->
+          <div class="card">
+            <div class="pill">📘 Guide des paramètres</div>
+            <div style="margin-top: 0.6rem; font-size: 0.86rem; color: var(--text-muted)">
+              Avant de saisir vos données, parcourez ce petit guide pour
+              comprendre à quoi sert chaque information demandée.
+            </div>
+
+            <div class="wizard-steps">
+              <div
+                class="wizard-step-indicator active"
+                id="indicator-step-1"
+              ></div>
+              <div class="wizard-step-indicator" id="indicator-step-2"></div>
+              <div class="wizard-step-indicator" id="indicator-step-3"></div>
+            </div>
+            <div class="wizard-labels">
+              <span>Sol (N‑P‑K)</span>
+              <span>Climat & pH</span>
+              <span>Résumé</span>
+            </div>
+
+            <!-- Étape 1 : Sol -->
+            <div class="wizard-step active" data-step="1">
+              <h3 style="margin: 0 0 0.4rem; font-size: 1rem">
+                1. Comprendre le sol (N, P, K)
+              </h3>
+              <ul
+                style="
+                  padding-left: 1.1rem;
+                  margin: 0.3rem 0;
+                  font-size: 0.86rem;
+                  color: var(--text-muted);
+                "
+              >
+                <li><strong>Azote (N)</strong> – feuilles et tiges.</li>
+                <li><strong>Phosphore (P)</strong> – racines et floraison.</li>
+                <li><strong>Potassium (K)</strong> – résistance de la plante.</li>
+              </ul>
+
+              <div class="mini-illustration">
+                <img
+                  class="guide-image"
+                  src="/images-agricultures/depositphotos_316892132-stock-photo-soil-test-agronomist-putting-soil.jpg"
+                  alt="Analyse de sol"
+                />
+                <div class="mini-illustration-text">
+                  Photo d’<strong>échantillon de sol analysé</strong> pour obtenir N, P et K.
+                </div>
+              </div>
+
+              <div class="wizard-actions">
+                <span class="hint">
+                  Étape 1/3 – Fertilité chimique de votre sol.
+                </span>
+                <button type="button" class="btn-primary" id="next-step-1">
+                  Suivant ▷
+                </button>
+              </div>
+            </div>
+
+            <!-- Étape 2 : Climat -->
+            <div class="wizard-step" data-step="2">
+              <h3 style="margin: 0 0 0.4rem; font-size: 1rem">
+                2. Climat et pH
+              </h3>
+              <ul
+                style="
+                  padding-left: 1.1rem;
+                  margin: 0.3rem 0;
+                  font-size: 0.86rem;
+                  color: var(--text-muted);
+                "
+              >
+                <li><strong>Température</strong> – chaleur moyenne.</li>
+                <li><strong>Humidité</strong> – air sec ou humide.</li>
+                <li><strong>Pluie</strong> – eau reçue par la parcelle.</li>
+                <li><strong>pH</strong> – sol acide, neutre ou basique.</li>
+              </ul>
+
+              <div class="mini-illustration">
+                <img
+                  class="guide-image"
+                  src="/images-agricultures/Gemini_Generated_Image_77wdtj77wdtj77wd.png"
+                  alt="Climat agricole"
+                />
+                <div class="mini-illustration-text">
+                  Illustration d’un <strong>champ et de son climat</strong> (température, pluie, humidité).
+                </div>
+              </div>
+
+              <div class="wizard-actions">
+                <button type="button" class="btn-secondary" id="prev-step-2">
+                  ◁ Retour
+                </button>
+                <button type="button" class="btn-primary" id="next-step-2">
+                  Suivant ▷
+                </button>
+              </div>
+            </div>
+
+            <!-- Étape 3 : Résumé -->
+            <div class="wizard-step" data-step="3">
+              <h3 style="margin: 0 0 0.4rem; font-size: 1rem">
+                3. Vue d’ensemble
+              </h3>
+              <div
+                style="
+                  font-size: 0.86rem;
+                  color: var(--text-muted);
+                  margin-bottom: 0.6rem;
+                "
+              >
+                Le modèle combine le <strong>sol</strong> et le
+                <strong>climat</strong> pour choisir la culture la plus proche
+                de situations déjà observées.
+              </div>
+
+              <div class="mini-illustration">
+                <img
+                  class="guide-image"
+                  src="/images-agricultures/Gemini_Generated_Image_bipeuubipeuubipe.png"
+                  alt="Parcelles cultivées"
+                />
+                <div class="mini-illustration-text">
+                  Image de <strong>parcelles cultivées</strong> illustrant le
+                  résultat final de la recommandation.
+                </div>
+              </div>
+
+              <div class="wizard-actions">
+                <button type="button" class="btn-secondary" id="prev-step-3">
+                  ◁ Retour
+                </button>
+                <button
+                  type="button"
+                  class="btn-primary"
+                  id="show-form-button"
+                >
+                  Passer à la saisie des données ▷
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Carte 2 : Résultat / interprétation -->
+          <div class="card">
+            <div class="pill">📊 Résultat et explications</div>
+            <div id="result" class="result" style="margin-top: 1rem">
+              <div class="result-title">
+                <div class="result-main">
+                  Culture recommandée :
+                  <span id="result-crop"></span>
+                </div>
+                <div id="result-confidence" class="result-badge"></div>
+              </div>
+              <div class="result-grid">
+                <div class="result-chip">
+                  🌱 Indice de fertilité sol :
+                  <strong id="result-soil"></strong>
+                </div>
+                <div class="result-chip">
+                  ☀️ Température :
+                  <strong id="result-temp"></strong>
+                </div>
+                <div class="result-chip">
+                  💧 Pluie :
+                  <strong id="result-rain"></strong>
+                </div>
+              </div>
+              <div id="status" class="status" style="margin-top: 0.8rem">
+                <div class="status-dot"></div>
+                <span>
+                  Modèle exécuté avec succès. Vous pouvez modifier les valeurs
+                  pour tester d’autres scénarios.
+                </span>
+              </div>
+
+              <div
+                style="
+                  margin-top: 0.7rem;
+                  font-size: 0.8rem;
+                  color: var(--text-muted);
+                "
+              >
+                <strong>Comment lire le résultat&nbsp;?</strong><br />
+                - La culture proposée est celle jugée la plus adaptée par le modèle.<br />
+                - Le pourcentage de confiance indique à quel point le modèle est
+                sûr de lui (par exemple 90&nbsp;% = modèle très confiant).<br />
+                - L’indice de fertilité résume N, P et K sur une échelle simple&nbsp;:
+                plus il est élevé, plus le sol est riche.
+              </div>
+            </div>
+            <div
+              id="result-placeholder"
+              style="
+                margin-top: 1rem;
+                font-size: 0.86rem;
+                color: var(--text-muted);
+              "
+            >
+              Remplissez les champs à gauche puis cliquez sur
+              <strong>“Lancer la recommandation”</strong> pour voir ici la
+              culture proposée.
+            </div>
+          </div>
+        </div>
+
+        <!-- Carte 3 : Formulaire de saisie (après le guide) -->
+        <div class="card" id="form-card" style="margin-top: 1.8rem; display: none">
+          <div class="pill">📝 Saisie de vos paramètres</div>
+          <div style="margin-top: 0.6rem; font-size: 0.86rem; color: var(--text-muted)">
+            Vous pouvez maintenant saisir vos valeurs ou garder les exemples
+            par défaut pour une démonstration.
+          </div>
+
+          <form id="crop-form" class="form-grid" style="margin-top: 1.3rem">
+            <div class="field">
+              <label for="N">Azote (N)</label>
+              <input
+                type="number"
+                id="N"
+                name="N"
+                step="0.01"
+                required
+                placeholder="ex: 90"
+              />
+              <span>Quantité d’azote dans le sol (kg/ha)</span>
+            </div>
+
+            <div class="field">
+              <label for="P">Phosphore (P)</label>
+              <input
+                type="number"
+                id="P"
+                name="P"
+                step="0.01"
+                required
+                placeholder="ex: 40"
+              />
+              <span>Apport disponible pour la plante</span>
+            </div>
+
+            <div class="field">
+              <label for="K">Potassium (K)</label>
+              <input
+                type="number"
+                id="K"
+                name="K"
+                step="0.01"
+                required
+                placeholder="ex: 60"
+              />
+              <span>Rôle clé pour la résistance des cultures</span>
+            </div>
+
+            <div class="field">
+              <label for="temperature">Température (°C)</label>
+              <input
+                type="number"
+                id="temperature"
+                name="temperature"
+                step="0.1"
+                required
+                placeholder="ex: 24"
+              />
+              <span>Moyenne sur la période de croissance</span>
+            </div>
+
+            <div class="field">
+              <label for="humidity">Humidité (%)</label>
+              <input
+                type="number"
+                id="humidity"
+                name="humidity"
+                step="0.1"
+                required
+                placeholder="ex: 70"
+              />
+              <span>Taux d’humidité de l’air</span>
+            </div>
+
+            <div class="field">
+              <label for="ph">pH du sol</label>
+              <input
+                type="number"
+                id="ph"
+                name="ph"
+                step="0.01"
+                required
+                placeholder="ex: 6.5"
+              />
+              <span>Acidité / basicité de votre sol</span>
+            </div>
+
+            <div class="field full-width">
+              <label for="rainfall">Pluviométrie (mm)</label>
+              <input
+                type="number"
+                id="rainfall"
+                name="rainfall"
+                step="0.1"
+                required
+                placeholder="ex: 150"
+              />
+              <span
+                >Cumul de pluie sur la saison (ou période d’analyse)</span
+              >
+            </div>
+
+            <div class="full-width submit-row">
+              <button type="submit" class="btn-primary">
+                🌾 Lancer la recommandation
+              </button>
+              <div class="hint">
+                Le modèle utilise un Random Forest entraîné sur un historique
+                de cultures et de conditions de sol.
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+
+      <footer>
+        TerraSense – Module Agriculture (recommandation de cultures). 🌾
+      </footer>
+    </div>
+
+    <script>
+      async function predictCrop(formData) {
+        const response = await fetch("/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+          throw new Error("Erreur de prédiction");
+        }
+
+        const result = await response.json();
+        if (!result.success) {
+          throw new Error(result.error || "Erreur de prédiction");
+        }
+
+        return {
+          crop: result.crop,
+          confidence: result.confidence,
+          soilFertility: result.soilFertility.toFixed(2),
+          inputData: formData,
+        };
+      }
+
+      const form = document.getElementById("crop-form");
+      const resultBox = document.getElementById("result");
+      const cropEl = document.getElementById("result-crop");
+      const confEl = document.getElementById("result-confidence");
+      const soilEl = document.getElementById("result-soil");
+      const tempEl = document.getElementById("result-temp");
+      const rainEl = document.getElementById("result-rain");
+      const statusEl = document.getElementById("status");
+      const placeholderEl = document.getElementById("result-placeholder");
+
+      // Gestion du wizard (next / previous) – uniquement guide texte
+      const steps = document.querySelectorAll(".wizard-step");
+      const indicators = [
+        document.getElementById("indicator-step-1"),
+        document.getElementById("indicator-step-2"),
+        document.getElementById("indicator-step-3"),
+      ];
+      let currentStep = 0;
+
+      function showStep(index) {
+        steps.forEach((step, i) => {
+          step.classList.toggle("active", i === index);
+        });
+        indicators.forEach((ind, i) => {
+          ind.classList.toggle("active", i <= index);
+        });
+        currentStep = index;
+      }
+
+      document
+        .getElementById("next-step-1")
+        .addEventListener("click", () => showStep(1));
+      document
+        .getElementById("next-step-2")
+        .addEventListener("click", () => showStep(2));
+      document
+        .getElementById("prev-step-2")
+        .addEventListener("click", () => showStep(0));
+      document
+        .getElementById("prev-step-3")
+        .addEventListener("click", () => showStep(1));
+
+      // Quand le guide est fini, on révèle le formulaire de saisie
+      const formCard = document.getElementById("form-card");
+      document
+        .getElementById("show-form-button")
+        .addEventListener("click", () => {
+          formCard.style.display = "block";
+          window.scrollTo({
+            top: formCard.offsetTop - 80,
+            behavior: "smooth",
+          });
+        });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = {
+          N: form.N.value,
+          P: form.P.value,
+          K: form.K.value,
+          temperature: form.temperature.value,
+          humidity: form.humidity.value,
+          ph: form.ph.value,
+          rainfall: form.rainfall.value,
+        };
+
+        statusEl.classList.remove("error");
+        statusEl.innerHTML =
+          '<div class="status-dot"></div><span>Prédiction en cours, merci de patienter…</span>';
+        resultBox.classList.add("visible");
+        placeholderEl.style.display = "none";
+
+        try {
+          const result = await predictCrop(formData);
+
+          cropEl.textContent = result.crop + " 🌱";
+          confEl.textContent =
+            "Confiance " + result.confidence.toFixed(1) + " %";
+          soilEl.textContent = result.soilFertility;
+          tempEl.textContent = result.inputData.temperature + " °C";
+          rainEl.textContent = result.inputData.rainfall + " mm";
+
+          statusEl.classList.remove("error");
+          statusEl.innerHTML =
+            '<div class="status-dot"></div><span>Modèle exécuté avec succès. Explorez différents scénarios !</span>';
+        } catch (err) {
+          statusEl.classList.add("error");
+          statusEl.innerHTML =
+            '<div class="status-dot"></div><span style="color:#ef4444">Une erreur est survenue : ' +
+            (err.message || "erreur inconnue") +
+            "</span>";
+        }
+      });
+    </script>
+  </body>
+  </html>
+
+

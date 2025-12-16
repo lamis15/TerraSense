@@ -1,0 +1,53 @@
+{
+    "date_export": "2025-12-16 15:10:21",
+    "target_variable": "CO(GT)",
+    "selected_features": [
+        "PT08.S1(CO)",
+        "NMHC(GT)",
+        "C6H6(GT)",
+        "PT08.S2(NMHC)",
+        "NOx(GT)",
+        "PT08.S3(NOx)",
+        "NO2(GT)",
+        "PT08.S4(NO2)",
+        "PT08.S5(O3)"
+    ],
+    "numeric_columns": [
+        "CO(GT)",
+        "PT08.S1(CO)",
+        "NMHC(GT)",
+        "C6H6(GT)",
+        "PT08.S2(NMHC)",
+        "NOx(GT)",
+        "PT08.S3(NOx)",
+        "NO2(GT)",
+        "PT08.S4(NO2)",
+        "PT08.S5(O3)",
+        "T",
+        "RH",
+        "AH"
+    ],
+    "correlation_threshold": 0.1,
+    "model_params": {
+        "n_estimators": 80,
+        "max_depth": 6,
+        "min_samples_split": 15,
+        "min_samples_leaf": 8,
+        "random_state": 42
+    },
+    "performance": {
+        "train_accuracy": 0.8361832061068702,
+        "test_accuracy": 0.8198005698005698,
+        "train_accuracy_pct": 83.61832061068702,
+        "test_accuracy_pct": 81.98005698005699
+    },
+    "class_mapping": {
+        "0": "Bas (CO faible)",
+        "1": "Moyen (CO moyen)",
+        "2": "Élevé (CO élevé)"
+    },
+    "quantiles": {
+        "q33": -0.5083191601815039,
+        "q67": 0.04589577227396444
+    }
+}
