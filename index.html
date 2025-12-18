@@ -2,22 +2,23 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <title>TerraSense – Recommandation de Cultures</title>
+    <title>TerraSense - Air et Eau</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- CSS principal pour la page d'accueil TerraSense -->
     <link rel="stylesheet" href="/static/index.css" />
   </head>
-  <body>
+      <body>
+        <div class="page-bg" aria-hidden="true">
+      <video class="bg-video" autoplay muted loop playsinline poster="/static/media/home-env.jpg">
+        <source src="/static/media/home-env.mp4" type="video/mp4" />
+      </video>
+      <div class="page-overlay"></div>
+    </div>
     <div class="page">
       <header>
         <div class="navbar">
           <div class="brand">
             <div class="brand-icon">
-              <img
-                src="/images-agricultures/logo.png"
-                alt="Logo TerraSense"
-                style="width: 32px; height: 32px; border-radius: 999px"
-              />
+              <img src="/images-agricultures/logo.png" alt="Logo TerraSense" />
             </div>
             <div>
               <div class="brand-text-main">TerraSense</div>
@@ -28,7 +29,7 @@
             <a href="/" class="nav-link">Home</a>
             <a href="/agriculture" class="nav-link">Agriculture</a>
             <a href="/air" class="nav-link">Air</a>
-            <a href="#" class="nav-link">About Us</a>
+            <a href="/water" class="nav-link">Water</a>
           </nav>
         </div>
       </header>
@@ -36,110 +37,122 @@
       <main>
         <section class="hero" id="home">
           <div class="hero-card">
-            <div class="landscape-illustration">
-              <div class="hills">
-                <div class="hill hill-1"></div>
-                <div class="hill hill-2"></div>
-              </div>
-              <div class="trees">
-                <div class="tree tree-1">
-                  <div class="tree-trunk"></div>
-                  <div class="tree-leaves"></div>
-                </div>
-                <div class="tree tree-2">
-                  <div class="tree-trunk"></div>
-                  <div class="tree-leaves"></div>
-                </div>
-                <div class="tree tree-3">
-                  <div class="tree-trunk"></div>
-                  <div class="tree-leaves"></div>
-                </div>
-              </div>
-              <div class="clouds"></div>
-            </div>
-            <div class="hero-content">
-              <h1>
-                TerraSense
-              </h1>
+            <div class="hero-copy">
+              <h1>TerraSense</h1>
               <p class="tagline">
-                Humans need to address environmental issues because they are no longer a problem for one society but a global issue. If the environment crumbles, then the possibility of our survival decreases. We need to adapt the concept of sustainability.
+                Humans need to address environmental issues because they are no
+                longer a problem for one society but a global issue. If the
+                environment crumbles, then the possibility of our survival
+                decreases. We need to adapt the concept of sustainability.
               </p>
               <button
                 type="button"
                 class="btn-primary"
-                onclick="window.location.href='/agriculture'"
+                onclick="window.location.href='/intro'"
+                aria-label="En savoir plus sur TerraSense"
               >
-                more
+                En savoir plus
               </button>
+            </div>
+            <div class="hero-illustration" aria-hidden="true">
+              <div class="shape-swoosh"></div>
+              <div class="hills">
+                <div class="hill hill-1"></div>
+                <div class="hill hill-2"></div>
+                <div class="hill hill-3"></div>
+              </div>
+              <div class="trees">
+                <div class="tree tree-1"></div>
+                <div class="tree tree-2"></div>
+                <div class="tree tree-3"></div>
+              </div>
             </div>
           </div>
         </section>
 
         <section class="domains" aria-label="Autres domaines TerraSense">
-          <article class="domain-card" id="air">
-            <div class="domain-card-content">
-              <h3>Qualité de l'air</h3>
-              <p>
-                Surveillez la qualité de l'air autour de vous grâce à nos modèles de prédiction. 
-                Obtenez des indices simples et des conseils adaptés pour protéger votre santé.
-              </p>
-              <button
-                type="button"
-                class="btn-primary"
-                onclick="window.location.href='/air'"
-                style="background: var(--gradient-blue);"
-              >
-                Explorer
-              </button>
+          <article class="domain-card air">
+            <div class="domain-icon air" aria-hidden="true">
+              <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
+                <path d="M10 24c6-8 20-8 26 0" />
+                <path d="M18 34c6-6 16-6 22 0" />
+                <path d="M12 44c8-8 24-8 32 0" />
+              </svg>
             </div>
+            <h3>Qualite de l'air</h3>
+            <p>
+              Surveillez la qualite de l'air autour de vous grace a nos modeles de
+              prediction. Obtenez des indices simples et des conseils adaptes pour
+              proteger votre sante.
+            </p>
+            <button
+              type="button"
+              class="btn-secondary air"
+              onclick="window.location.href='/air'"
+              aria-label="Explorer la qualité de l'air"
+            >
+              Explorer
+            </button>
           </article>
 
-          <article class="domain-card" id="water">
-            <div class="domain-card-content">
-              <h3>Qualité de l'eau</h3>
-              <p>
-                Protégez les ressources en eau avec des analyses de qualité basées sur des données 
-                scientifiques. Suivez l'évolution de la qualité des eaux souterraines et de surface.
-              </p>
-              <button
-                type="button"
-                class="btn-primary"
-                style="background: var(--gradient-teal);"
-              >
-                Explorer
-              </button>
+          <article class="domain-card agriculture">
+            <div class="domain-icon agriculture" aria-hidden="true">
+              <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
+                <path d="M12 38c10-14 26-18 40-18-2 14-10 30-26 32-9 1-16-4-14-14z" />
+                <path d="M28 20c8 8 12 18 12 30" />
+              </svg>
             </div>
+            <h3>Agriculture</h3>
+            <p>
+              Optimisez vos cultures avec des recommandations basees sur le sol
+              et le climat. Simulez des parametres simples pour choisir la
+              culture la plus adaptee a votre parcelle.
+            </p>
+            <button
+              type="button"
+              class="btn-secondary agriculture"
+              onclick="window.location.href='/agriculture'"
+              aria-label="Explorer l'agriculture"
+            >
+              Explorer
+            </button>
+          </article>
+
+          <article class="domain-card water">
+            <div class="domain-icon water" aria-hidden="true">
+              <svg viewBox="0 0 64 64" role="presentation" aria-hidden="true">
+                <path d="M32 10C24 22 18 30 18 40c0 8.8 6.7 14 14 14s14-5.2 14-14c0-10-6-18-14-30z" />
+              </svg>
+            </div>
+            <h3>Qualite de l'eau</h3>
+            <p>
+              Protegez les ressources en eau avec des analyses de qualite basees
+              sur des donnees scientifiques. Suivez l'evolution de la qualite des
+              eaux souterraines et de surface.
+            </p>
+            <button
+              type="button"
+              class="btn-secondary water"
+              onclick="window.location.href='/water'"
+              aria-label="Explorer la qualité de l'eau"
+            >
+              Explorer
+            </button>
           </article>
         </section>
       </main>
 
       <footer>
-        TerraSense – Projet de modélisation environnementale (Agriculture, Air,
-        Eau). Interface conçue pour un thème vert et écoresponsable. 🌍
+        TerraSense - Modelisation environnementale pour l'air, l'eau et
+        l'agriculture.
       </footer>
     </div>
-
-    <script>
-      // Navigation douce entre les 3 domaines (sur la page d'accueil uniquement)
-      document.querySelectorAll(".nav-link[data-target]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const targetId = btn.getAttribute("data-target");
-          const section = document.getElementById(targetId);
-          if (!section) return;
-
-          document
-            .querySelectorAll(".nav-link[data-target]")
-            .forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-
-          window.scrollTo({
-            top: section.offsetTop - 80,
-            behavior: "smooth",
-          });
-        });
-      });
-    </script>
   </body>
-  </html>
+</html>
+
+
+
+
+
 
 

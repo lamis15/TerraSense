@@ -2,207 +2,252 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <title>TerraSense – Module Qualité de l’air</title>
+    <title>TerraSense - Qualite de l'air</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/static/air.css" />
   </head>
-  <body>
+      <body>
+        <div class="page-bg" aria-hidden="true">
+      <video class="bg-video" autoplay muted loop playsinline poster="/static/media/air.jpg">
+        <source src="/static/media/air.mp4" type="video/mp4" />
+      </video>
+      <div class="page-overlay"></div>
+    </div>
     <div class="page">
       <header>
         <div class="navbar">
           <div class="brand" onclick="window.location.href='/'">
             <div class="brand-icon">
-              <img
-                src="/images-agricultures/logo.png"
-                alt="Logo TerraSense"
-                style="width: 32px; height: 32px; border-radius: 999px"
-              />
+              <img src="/images-agricultures/logo.png" alt="Logo TerraSense" />
             </div>
             <div>
               <div class="brand-text-main">TerraSense</div>
-              <div class="brand-text-sub">Module Qualité de l’air</div>
+              <div class="brand-text-sub">Module qualite de l'air</div>
             </div>
           </div>
           <nav class="nav-links">
             <a href="/" class="nav-link">Home</a>
             <a href="/agriculture" class="nav-link">Agriculture</a>
             <a href="/air" class="nav-link">Air</a>
+            <a href="/water" class="nav-link">Water</a>
           </nav>
         </div>
       </header>
 
       <main>
-        <h1>
-          Quel est le <span>niveau de pollution</span> de l'air&nbsp;?
-        </h1>
-        <p class="tagline">
-          Saisissez les principales mesures issues des capteurs de la station
-          pour obtenir un niveau de qualité de l'air simple : Bas, Moyen ou
-          Élevé.
-        </p>
-
-        <div class="layout">
-          <div class="card">
-            <div class="pill">🧪 Mesures issues des capteurs</div>
-            <form id="air-form" class="form-grid" style="margin-top: 1.3rem">
-              <div class="field">
-                <label for="PT08.S1(CO)">PT08.S1(CO)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="PT08.S1(CO)"
-                  name="PT08.S1(CO)"
-                  required
-                />
-                <span>Capteur 1 lié au monoxyde de carbone</span>
-              </div>
-
-              <div class="field">
-                <label for="NMHC(GT)">NMHC(GT)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="NMHC(GT)"
-                  name="NMHC(GT)"
-                  required
-                />
-                <span>Hydrocarbures non méthaniques</span>
-              </div>
-
-              <div class="field">
-                <label for="C6H6(GT)">C6H6(GT)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="C6H6(GT)"
-                  name="C6H6(GT)"
-                  required
-                />
-                <span>Benzène (C6H6)</span>
-              </div>
-
-              <div class="field">
-                <label for="PT08.S2(NMHC)">PT08.S2(NMHC)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="PT08.S2(NMHC)"
-                  name="PT08.S2(NMHC)"
-                  required
-                />
-                <span>Capteur 2 lié aux NMHC</span>
-              </div>
-
-              <div class="field">
-                <label for="NOx(GT)">NOx(GT)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="NOx(GT)"
-                  name="NOx(GT)"
-                  required
-                />
-                <span>Oxydes d’azote</span>
-              </div>
-
-              <div class="field">
-                <label for="PT08.S3(NOx)">PT08.S3(NOx)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="PT08.S3(NOx)"
-                  name="PT08.S3(NOx)"
-                  required
-                />
-                <span>Capteur 3 pour NOx</span>
-              </div>
-
-              <div class="field">
-                <label for="NO2(GT)">NO2(GT)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="NO2(GT)"
-                  name="NO2(GT)"
-                  required
-                />
-                <span>Dioxyde d’azote</span>
-              </div>
-
-              <div class="field">
-                <label for="PT08.S4(NO2)">PT08.S4(NO2)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="PT08.S4(NO2)"
-                  name="PT08.S4(NO2)"
-                  required
-                />
-                <span>Capteur 4 pour NO2</span>
-              </div>
-
-              <div class="field">
-                <label for="PT08.S5(O3)">PT08.S5(O3)</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  id="PT08.S5(O3)"
-                  name="PT08.S5(O3)"
-                  required
-                />
-                <span>Capteur 5 pour O3 (ozone)</span>
-              </div>
-
-              <div class="full-width submit-row">
-                <button type="submit" class="btn-primary">
-                  💨 Évaluer la qualité de l’air
-                </button>
-                <div class="hint">
-                  Le modèle classe le niveau de pollution en Bas, Moyen ou
-                  Élevé.
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <div class="card">
-            <div class="pill">📊 Résultat</div>
-            <div id="air-result" class="result" style="margin-top: 1rem">
-              <div class="result-title">
-                <div class="result-main">
-                  Niveau de pollution :
-                  <span id="air-level"></span>
-                </div>
-              </div>
-              <div id="air-explanation" style="margin-top: 1rem; font-size: 1rem; line-height: 1.6; color: var(--text-muted)">
-                <!-- Message interprétable affiché ici -->
-              </div>
-              <div id="air-status" class="status" style="margin-top: 1rem">
-                <div class="status-dot"></div>
-                <span>
-                  Niveau de pollution estimé à partir des capteurs.
-                </span>
+        <section class="hero">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="eyebrow">Module air quality</p>
+              <h1>
+                Prediction du niveau de pollution
+                <span>par les capteurs.</span>
+              </h1>
+              <p class="tagline">
+                Saisissez les mesures issues des capteurs pour obtenir un niveau
+                de qualite de l'air simple : Bas, Moyen ou Eleve.
+              </p>
+            </div>
+            <div class="hero-visual air-video" aria-hidden="true">
+              <video
+                class="bg-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                poster="/static/media/air.jpg"
+              >
+                <source src="/static/media/air.mp4" type="video/mp4" />
+              </video>
+              <div class="video-overlay"></div>
+              <div class="photo-sheen"></div>
+              <div class="wind-line line-1"></div>
+              <div class="wind-line line-2"></div>
+              <div class="wind-line line-3"></div>
+              <div class="wind-line line-4"></div>
+              <div class="wind-line line-5"></div>
+              <div class="wind-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
               </div>
             </div>
-            <div
-              id="air-result-placeholder"
-              style="
-                margin-top: 1rem;
-                font-size: 0.86rem;
-                color: var(--text-muted);
-              "
-            >
-              Remplissez les mesures des capteurs puis cliquez sur
-              <strong>“Évaluer la qualité de l’air”</strong> pour voir ici le
-              niveau global de pollution.
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="layout">
+            <div class="card">
+              <div class="pill">Mesures issues des capteurs</div>
+              <form id="air-form" class="form-grid" style="margin-top: 1.3rem">
+                <div class="field">
+                  <label for="PT08.S1(CO)">PT08.S1(CO)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="PT08.S1(CO)"
+                    name="PT08.S1(CO)"
+                    required
+                  />
+                  <span>Capteur 1 lie au monoxyde de carbone</span>
+                </div>
+
+                <div class="field">
+                  <label for="NMHC(GT)">NMHC(GT)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="NMHC(GT)"
+                    name="NMHC(GT)"
+                    required
+                  />
+                  <span>Hydrocarbures non methaniques</span>
+                </div>
+
+                <div class="field">
+                  <label for="C6H6(GT)">C6H6(GT)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="C6H6(GT)"
+                    name="C6H6(GT)"
+                    required
+                  />
+                  <span>Benzene (C6H6)</span>
+                </div>
+
+                <div class="field">
+                  <label for="PT08.S2(NMHC)">PT08.S2(NMHC)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="PT08.S2(NMHC)"
+                    name="PT08.S2(NMHC)"
+                    required
+                  />
+                  <span>Capteur 2 lie aux NMHC</span>
+                </div>
+
+                <div class="field">
+                  <label for="NOx(GT)">NOx(GT)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="NOx(GT)"
+                    name="NOx(GT)"
+                    required
+                  />
+                  <span>Oxydes d'azote</span>
+                </div>
+
+                <div class="field">
+                  <label for="PT08.S3(NOx)">PT08.S3(NOx)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="PT08.S3(NOx)"
+                    name="PT08.S3(NOx)"
+                    required
+                  />
+                  <span>Capteur 3 pour NOx</span>
+                </div>
+
+                <div class="field">
+                  <label for="NO2(GT)">NO2(GT)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="NO2(GT)"
+                    name="NO2(GT)"
+                    required
+                  />
+                  <span>Dioxyde d'azote</span>
+                </div>
+
+                <div class="field">
+                  <label for="PT08.S4(NO2)">PT08.S4(NO2)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="PT08.S4(NO2)"
+                    name="PT08.S4(NO2)"
+                    required
+                  />
+                  <span>Capteur 4 pour NO2</span>
+                </div>
+
+                <div class="field">
+                  <label for="PT08.S5(O3)">PT08.S5(O3)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="PT08.S5(O3)"
+                    name="PT08.S5(O3)"
+                    required
+                  />
+                  <span>Capteur 5 pour O3 (ozone)</span>
+                </div>
+
+                <div class="full-width submit-row">
+                  <button type="submit" class="btn-primary">
+                    Evaluer la qualite de l'air
+                  </button>
+                  <div class="hint">
+                    Le modele classe le niveau de pollution en Bas, Moyen ou
+                    Eleve.
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <div class="pill">Resultat</div>
+              <div id="air-result" class="result" style="margin-top: 1rem">
+                <div class="result-title">
+                  <div class="result-main">
+                    Niveau de pollution :
+                    <span id="air-level"></span>
+                  </div>
+                </div>
+                <div
+                  id="air-explanation"
+                  style="
+                    margin-top: 1rem;
+                    font-size: 1rem;
+                    line-height: 1.6;
+                    color: var(--text-muted);
+                  "
+                >
+                </div>
+                <div id="air-status" class="status" style="margin-top: 1rem">
+                  <div class="status-dot"></div>
+                  <span>
+                    Niveau de pollution estime a partir des capteurs.
+                  </span>
+                </div>
+              </div>
+              <div
+                id="air-result-placeholder"
+                style="
+                  margin-top: 1rem;
+                  font-size: 0.86rem;
+                  color: var(--text-muted);
+                "
+              >
+                Remplissez les mesures des capteurs puis cliquez sur
+                <strong>Evaluer la qualite de l'air</strong> pour voir ici le
+                niveau global de pollution.
+              </div>
             </div>
           </div>
-        </div>
+        </section>
       </main>
 
       <footer>
-        TerraSense – Module Qualité de l’air (classification Bas / Moyen /
-        Élevé). 💨
+        TerraSense - Module qualite de l'air (classification Bas / Moyen /
+        Eleve).
       </footer>
     </div>
 
@@ -217,12 +262,12 @@
         });
 
         if (!response.ok) {
-          throw new Error("Erreur de prédiction");
+          throw new Error("Erreur de prediction");
         }
 
         const result = await response.json();
         if (!result.success) {
-          throw new Error(result.error || "Erreur de prédiction");
+          throw new Error(result.error || "Erreur de prediction");
         }
 
         return result;
@@ -256,7 +301,7 @@
 
         airStatusEl.classList.remove("error");
         airStatusEl.innerHTML =
-          '<div class="status-dot"></div><span>Calcul en cours…</span>';
+          '<div class="status-dot"></div><span>Calcul en cours...</span>';
         airResultBox.classList.add("visible");
         airResultPlaceholder.style.display = "none";
 
@@ -265,17 +310,17 @@
           airLevelEl.textContent = result.label;
 
           const messages = {
-            0: "Air globalement bon. Les activités extérieures peuvent se dérouler normalement.",
-            1: "Qualité de l'air moyenne. Les personnes sensibles peuvent limiter les efforts prolongés en extérieur.",
-            2: "Pollution élevée. Évitez les efforts intenses en extérieur et privilégiez les espaces fermés.",
+            0: "Air globalement bon. Les activites exterieures peuvent se derouler normalement.",
+            1: "Qualite de l'air moyenne. Les personnes sensibles peuvent limiter les efforts prolonges en exterieur.",
+            2: "Pollution elevee. Evitez les efforts intenses en exterieur et privilegiez les espaces fermes.",
           };
 
           airExplanationEl.textContent =
-            messages[result.class] || result.explanation || "Niveau de pollution estimé.";
+            messages[result.class] || result.explanation || "Niveau de pollution estime.";
 
           airStatusEl.classList.remove("error");
           airStatusEl.innerHTML =
-            '<div class="status-dot"></div><span>Interprétez ce niveau pour adapter vos actions (trafic, activités, sensibilisation).</span>';
+            '<div class="status-dot"></div><span>Interpretez ce niveau pour adapter vos actions (trafic, activites, sensibilisation).</span>';
         } catch (err) {
           airStatusEl.classList.add("error");
           airStatusEl.innerHTML =
@@ -286,6 +331,10 @@
       });
     </script>
   </body>
-  </html>
+</html>
+
+
+
+
 
 

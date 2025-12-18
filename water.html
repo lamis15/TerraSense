@@ -1,0 +1,300 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TerraSense - Qualite de l'eau</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/water.css" />
+  </head>
+  <body>
+    <div class="page-bg" aria-hidden="true">
+      <video class="bg-video" autoplay muted loop playsinline poster="/static/media/water.jpg">
+        <source src="/static/media/water.mp4" type="video/mp4" />
+      </video>
+      <div class="page-overlay"></div>
+    </div>
+    <div class="page">
+      <header>
+        <div class="navbar">
+          <div class="brand" onclick="window.location.href='/'">
+            <div class="brand-icon">
+              <img src="/images-agricultures/logo.png" alt="Logo TerraSense" />
+            </div>
+            <div>
+              <div class="brand-text-main">TerraSense</div>
+              <div class="brand-text-sub">Module qualite de l'eau</div>
+            </div>
+          </div>
+          <nav class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/agriculture" class="nav-link">Agriculture</a>
+            <a href="/air" class="nav-link">Air</a>
+            <a href="/water" class="nav-link">Water</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="eyebrow">Module water quality</p>
+              <h1>
+                Prediction de la qualite de l'eau
+                <span>dans vos bassins.</span>
+              </h1>
+              <p class="tagline">
+                Entrez les parametres essentiels pour estimer la qualite de l'eau
+                et anticiper les actions de traitement.
+              </p>
+            </div>
+            <div class="hero-visual beach-video" aria-hidden="true">
+              <video
+                class="bg-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                poster="/static/media/water.jpg"
+              >
+                <source src="/static/media/water.mp4" type="video/mp4" />
+              </video>
+              <div class="video-overlay"></div>
+              <div class="photo-sheen"></div>
+              <div class="tide tide-1"></div>
+              <div class="tide tide-2"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="layout">
+            <div class="card">
+              <div class="pill">Parametres de l'eau</div>
+              <form id="water-form" class="form-grid" style="margin-top: 1.3rem">
+                <div class="field">
+                  <label for="ph">pH</label>
+                  <input type="number" step="0.01" id="ph" name="ph" required />
+                  <span>Acidite ou basicite de l'eau</span>
+                </div>
+
+                <div class="field">
+                  <label for="hardness">Hardness</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    id="hardness"
+                    name="hardness"
+                    required
+                  />
+                  <span>Durete de l'eau (mg/L)</span>
+                </div>
+
+                <div class="field">
+                  <label for="solids">Solids</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    id="solids"
+                    name="solids"
+                    required
+                  />
+                  <span>Solides dissous totaux (ppm)</span>
+                </div>
+
+                <div class="field">
+                  <label for="chloramines">Chloramines</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="chloramines"
+                    name="chloramines"
+                    required
+                  />
+                  <span>Concentration en chloramines (mg/L)</span>
+                </div>
+
+                <div class="field">
+                  <label for="sulfate">Sulfate</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    id="sulfate"
+                    name="sulfate"
+                    required
+                  />
+                  <span>Concentration en sulfate (mg/L)</span>
+                </div>
+
+                <div class="field">
+                  <label for="conductivity">Conductivity</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    id="conductivity"
+                    name="conductivity"
+                    required
+                  />
+                  <span>Mineralisation totale</span>
+                </div>
+
+                <div class="field">
+                  <label for="organic_carbon">Organic Carbon</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="organic_carbon"
+                    name="organic_carbon"
+                    required
+                  />
+                  <span>Carbone organique total (mg/L)</span>
+                </div>
+
+                <div class="field">
+                  <label for="trihalomethanes">Trihalomethanes</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="trihalomethanes"
+                    name="trihalomethanes"
+                    required
+                  />
+                  <span>Concentration en trihalomethanes (ug/L)</span>
+                </div>
+
+                <div class="field">
+                  <label for="turbidity">Turbidity</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    id="turbidity"
+                    name="turbidity"
+                    required
+                  />
+                  <span>Niveau de particules en suspension</span>
+                </div>
+
+                <div class="full-width submit-row">
+                  <button type="submit" class="btn-primary">
+                    Evaluer la qualite de l'eau
+                  </button>
+                  <div class="hint">
+                    Le modele de prediction est connecte et pret a evaluer la qualite de l'eau.
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card">
+              <div class="pill">Resultat</div>
+              <div id="water-result" class="result" style="margin-top: 1rem; display: none;">
+                <div id="water-result-box" class="result-box">
+                  <div id="water-icon" class="result-icon"></div>
+                  <div id="water-level" class="result-label">En attente</div>
+                  <div id="water-explanation" class="result-description"></div>
+                </div>
+              </div>
+              <div
+                id="water-result-placeholder"
+                style="
+                  margin-top: 1rem;
+                  font-size: 0.86rem;
+                  color: var(--text-muted);
+                "
+              >
+                Renseignez les parametres puis cliquez sur
+                <strong>Evaluer la qualite de l'eau</strong> pour afficher le
+                resultat ici.
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        TerraSense - Module qualite de l'eau.
+      </footer>
+    </div>
+
+    <script>
+      async function predictWater(formData) {
+        const response = await fetch("/predict_water", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        const result = await response.json();
+        if (!response.ok || !result.success) {
+          const errorMsg = result.error || `Erreur HTTP ${response.status}`;
+          throw new Error(errorMsg);
+        }
+        return result;
+      }
+
+      const waterForm = document.getElementById("water-form");
+      const waterResult = document.getElementById("water-result");
+      const waterResultBox = document.getElementById("water-result-box");
+      const waterResultPlaceholder = document.getElementById("water-result-placeholder");
+      const waterLevelEl = document.getElementById("water-level");
+      const waterExplanationEl = document.getElementById("water-explanation");
+      const waterIcon = document.getElementById("water-icon");
+
+      waterForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = {
+          ph: parseFloat(waterForm.ph.value),
+          hardness: parseFloat(waterForm.hardness.value),
+          solids: parseFloat(waterForm.solids.value),
+          chloramines: parseFloat(waterForm.chloramines.value),
+          sulfate: parseFloat(waterForm.sulfate.value),
+          conductivity: parseFloat(waterForm.conductivity.value),
+          organic_carbon: parseFloat(waterForm.organic_carbon.value),
+          trihalomethanes: parseFloat(waterForm.trihalomethanes.value),
+          turbidity: parseFloat(waterForm.turbidity.value),
+        };
+
+        waterResultPlaceholder.style.display = "none";
+        waterResult.style.display = "block";
+        waterResultBox.className = "result-box result-loading";
+        waterIcon.innerHTML = '<div class="loading-spinner"></div>';
+        waterLevelEl.textContent = "Analyse en cours...";
+        waterExplanationEl.textContent = "";
+
+        try {
+          const result = await predictWater(formData);
+
+          waterResult.style.display = "block";
+          waterResultPlaceholder.style.display = "none";
+
+          const isPotable = result.is_potable;
+
+          if (isPotable) {
+            waterResultBox.className = "result-box result-potable";
+            waterIcon.innerHTML = '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>';
+            waterLevelEl.textContent = result.label;
+            waterExplanationEl.textContent = result.explanation || "This water is safe to drink!";
+          } else {
+            waterResultBox.className = "result-box result-non-potable";
+            waterIcon.innerHTML = '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+            waterLevelEl.textContent = result.label;
+            waterExplanationEl.textContent = result.explanation || "This water is NOT safe to drink!";
+          }
+        } catch (err) {
+          const errorMsg = err.message || "erreur inconnue";
+          console.error("Erreur de prediction:", err);
+
+          waterResult.style.display = "block";
+          waterResultPlaceholder.style.display = "none";
+          waterResultBox.className = "result-box result-error";
+          waterIcon.innerHTML = '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>';
+          waterLevelEl.textContent = "ERREUR";
+          waterExplanationEl.textContent = errorMsg;
+        }
+      });
+    </script>
+  </body>
+</html>

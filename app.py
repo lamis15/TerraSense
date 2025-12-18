@@ -34,6 +34,12 @@ def home():
     with open("index.html", "r", encoding="utf-8") as f:
         return f.read()
 
+@app.route("/intro")
+def intro_page():
+    """Page d'introduction TerraSense."""
+    with open("intro.html", "r", encoding="utf-8") as f:
+        return f.read()
+
 
 @app.route("/agriculture")
 def agriculture_page():
@@ -185,8 +191,155 @@ def predict():
         return jsonify({"success": False, "error": str(e)}), 400
 
 
+# ---------- Chargement du modèle Water Quality (Yazid) ----------
+WATER_DIR = os.path.join(BASE_DIR, "yazid")
+water_clusterer = joblib.load(os.path.join(WATER_DIR, "clusterer.pkl"))
+water_reducer = joblib.load(os.path.join(WATER_DIR, "reducer.pkl"))
+water_scaler = joblib.load(os.path.join(WATER_DIR, "scaler.pkl"))
+
+WATER_FEATURE_COLUMNS = [
+    "ph", "Hardness", "Solids", "Chloramines", "Sulfate",
+    "Conductivity", "Organic_carbon", "Trihalomethanes", "Turbidity"
+]
+
+
+@app.route("/water")
+def water_page():
+    """Page dediee au module Qualite de l'eau."""
+    with open("water.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+
+@app.route("/predict_water", methods=["POST"])
+def predict_water():
+    """Endpoint de prédiction pour la qualité de l'eau."""
+    try:
+        data = request.get_json()
+        
+        # Debug: afficher les données reçues
+        print(f"Données reçues: {data}")
+
+        # Récupérer l'ordre exact des colonnes attendu par le scaler
+        feature_cols = list(WATER_FEATURE_COLUMNS)
+        print(f"Colonnes attendues par le scaler: {feature_cols}")
+        
+        # Mapping des noms du formulaire vers les noms du modèle
+        field_mapping = {
+            "ph": "ph",
+            "hardness": "Hardness",
+            "solids": "Solids",
+            "chloramines": "Chloramines",
+            "sulfate": "Sulfate",
+            "conductivity": "Conductivity",
+            "organic_carbon": "Organic_carbon",
+            "trihalomethanes": "Trihalomethanes",
+            "turbidity": "Turbidity"
+        }
+        
+        # Créer un dictionnaire avec les valeurs dans l'ordre attendu
+        input_dict = {}
+        for model_col in feature_cols:
+            # Trouver la clé correspondante dans les données reçues
+            field_key = None
+            for form_key, mapped_col in field_mapping.items():
+                if mapped_col == model_col:
+                    field_key = form_key
+                    break
+            
+            if field_key and field_key in data:
+                input_dict[model_col] = [float(data[field_key])]
+            else:
+                raise ValueError(f"Champ manquant pour la colonne {model_col} (attendu depuis: {field_key})")
+        
+        # Création du DataFrame dans l'ordre exact attendu par le scaler
+        input_data = pd.DataFrame(input_dict)
+        
+        print(f"DataFrame créé avec colonnes: {list(input_data.columns)}")
+        print(f"Valeurs: {input_data.values.flatten()}")
+
+        # Normalisation avec le scaler
+        # Le scaler attend les colonnes dans un ordre spécifique
+        feature_cols = list(WATER_FEATURE_COLUMNS)
+        
+        # S'assurer que toutes les colonnes attendues sont présentes
+        missing_cols = set(feature_cols) - set(input_data.columns)
+        if missing_cols:
+            raise ValueError(f"Colonnes manquantes: {missing_cols}")
+        
+        # Réorganiser les colonnes dans l'ordre attendu par le scaler
+        input_for_scaler = input_data[feature_cols]
+        scaled_values = water_scaler.transform(input_for_scaler)
+
+        # Réduction de dimensionnalité (si nécessaire)
+        # Le reducer peut être UMAP, t-SNE, PCA, etc.
+        try:
+            if hasattr(water_reducer, 'transform'):
+                # UMAP peut avoir des problèmes avec numba, utiliser suppress_warnings
+                import warnings
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    reduced_values = water_reducer.transform(scaled_values)
+            else:
+                # Si pas de méthode transform, utiliser les valeurs scalées directement
+                reduced_values = scaled_values
+        except Exception as e:
+            # En cas d'erreur, utiliser les valeurs scalées directement
+            print(f"Warning: Réduction de dimensionnalité échouée: {e}")
+            print("Utilisation des valeurs scalées directement (sans réduction)")
+            reduced_values = scaled_values
+
+
+        # Prediction du cluster avec HDBSCAN (approximate_predict uniquement)
+        cluster = None
+        confidence = None
+        try:
+            from hdbscan import approximate_predict as hdbscan_approximate_predict
+            labels_pred, strengths_pred = hdbscan_approximate_predict(water_clusterer, reduced_values)
+            cluster = int(labels_pred[0])
+            strength = float(strengths_pred[0]) if len(strengths_pred) > 0 else None
+            confidence = float(strength * 100) if strength is not None else None
+            if cluster == -1:
+                cluster = 5
+                confidence = None
+            print(f"Prediction via hdbscan.approximate_predict: cluster={cluster}, strength={strength}")
+        except Exception as e:
+            print(f"hdbscan.approximate_predict failed: {e}")
+            cluster = 2
+            confidence = None
+
+        # Déterminer si l'eau est potable ou non basé sur les clusters
+        # Clusters 0-1 = POTABLE, Clusters 2-5 = NON POTABLE
+        is_potable = cluster in [0, 1]
+        potability_label = "POTABLE" if is_potable else "NON POTABLE"
+        
+        # Messages explicatifs selon le cluster
+        explanations = {
+            0: "This water is safe to drink!",
+            1: "This water is safe to drink!",
+            2: "This water is NOT safe to drink!",
+            3: "This water is NOT safe to drink!",
+            4: "This water is NOT safe to drink!",
+            5: "This water is NOT safe to drink! Abnormal values detected."
+        }
+
+        return jsonify({
+            "success": True,
+            "cluster": int(cluster) if cluster is not None else None,
+            "label": str(potability_label),
+            "is_potable": bool(is_potable),
+            "confidence": float(confidence) if confidence is not None else None,
+            "explanation": str(explanations.get(cluster, "Water quality evaluated."))
+        })
+    except Exception as e:
+        import traceback
+        print("=== ERREUR /predict_water ===")
+        traceback.print_exc()
+        print("=== FIN ERREUR /predict_water ===")
+        return jsonify({"success": False, "error": str(e)}), 400
+
 if __name__ == "__main__":
     # Pour le développement local
     app.run(debug=True, host="0.0.0.0", port=5000)
+
 
 
