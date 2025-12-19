@@ -6,6 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- CSS spécifique au module Agriculture -->
     <link rel="stylesheet" href="/static/agriculture.css" />
+    <script>
+      (function () {
+        const ok = localStorage.getItem("terrasense-auth");
+        if (!ok && window.location.pathname !== "/signin") {
+          window.location.replace("/signin");
+        }
+      })();
+    </script>
   </head>
       <body>
         <div class="page-bg" aria-hidden="true">
@@ -17,23 +25,20 @@
     <div class="page">
       <header>
         <div class="navbar">
-          <div class="brand" onclick="window.location.href='/'">
+          <div class="brand">
             <div class="brand-icon">
-              <img
-                src="/images-agricultures/logo.png"
-                alt="Logo TerraSense"
-                style="width: 32px; height: 32px; border-radius: 999px"
-              />
+              <img src="/images-agricultures/logo.png" alt="Logo TerraSense" />
             </div>
             <div>
               <div class="brand-text-main">TerraSense</div>
-              <div class="brand-text-sub">Module Agriculture</div>
+              <div class="brand-text-sub">Intelligence pour la Terre</div>
             </div>
           </div>
           <nav class="nav-links">
-            <a href="/" class="nav-link">Home</a>
+            <a href="/home" class="nav-link">Home</a>
             <a href="/agriculture" class="nav-link">Agriculture</a>
             <a href="/air" class="nav-link">Air</a>
+            <a href="/water" class="nav-link">Water</a>
           </nav>
         </div>
       </header>
@@ -52,7 +57,7 @@
 
         <div class="layout">
           <!-- Carte 1 : Guide pédagogique par étapes (sans saisie) -->
-          <div class="card">
+          <div class="card" id="agri-guide-card">
             <div class="pill">📘 Guide des paramètres</div>
             <div style="margin-top: 0.6rem; font-size: 0.86rem; color: var(--text-muted)">
               Avant de saisir vos données, parcourez ce petit guide pour
@@ -196,8 +201,122 @@
             </div>
           </div>
 
+          <!-- Carte 2 : Formulaire de saisie (après le guide) -->
+          <div class="card" id="form-card" style="margin-top: 1.8rem; display: none">
+            <div class="pill">📝 Saisie de vos paramètres</div>
+            <div style="margin-top: 0.6rem; font-size: 0.86rem; color: var(--text-muted)">
+              Vous pouvez maintenant saisir vos valeurs ou garder les exemples
+              par défaut pour une démonstration.
+            </div>
+
+            <form id="crop-form" class="form-grid" style="margin-top: 1.3rem">
+              <div class="field">
+                <label for="N">Azote (N)</label>
+                <input
+                  type="number"
+                  id="N"
+                  name="N"
+                  step="0.01"
+                  required
+                  placeholder="ex: 90"
+                />
+                <span>Quantité d’azote dans le sol (kg/ha)</span>
+              </div>
+
+              <div class="field">
+                <label for="P">Phosphore (P)</label>
+                <input
+                  type="number"
+                  id="P"
+                  name="P"
+                  step="0.01"
+                  required
+                  placeholder="ex: 40"
+                />
+                <span>Apport disponible pour la plante</span>
+              </div>
+
+              <div class="field">
+                <label for="K">Potassium (K)</label>
+                <input
+                  type="number"
+                  id="K"
+                  name="K"
+                  step="0.01"
+                  required
+                  placeholder="ex: 60"
+                />
+                <span>Rôle clé pour la résistance des cultures</span>
+              </div>
+
+              <div class="field">
+                <label for="temperature">Température (°C)</label>
+                <input
+                  type="number"
+                  id="temperature"
+                  name="temperature"
+                  step="0.1"
+                  required
+                  placeholder="ex: 24"
+                />
+                <span>Moyenne sur la période de croissance</span>
+              </div>
+
+              <div class="field">
+                <label for="humidity">Humidité (%)</label>
+                <input
+                  type="number"
+                  id="humidity"
+                  name="humidity"
+                  step="0.1"
+                  required
+                  placeholder="ex: 70"
+                />
+                <span>Taux d’humidité de l’air</span>
+              </div>
+
+              <div class="field">
+                <label for="ph">pH du sol</label>
+                <input
+                  type="number"
+                  id="ph"
+                  name="ph"
+                  step="0.01"
+                  required
+                  placeholder="ex: 6.5"
+                />
+                <span>Acidité / basicité de votre sol</span>
+              </div>
+
+              <div class="field full-width">
+                <label for="rainfall">Pluviométrie (mm)</label>
+                <input
+                  type="number"
+                  id="rainfall"
+                  name="rainfall"
+                  step="0.1"
+                  required
+                  placeholder="ex: 150"
+                />
+                <span
+                  >Cumul de pluie sur la saison (ou période d’analyse)</span
+                >
+              </div>
+
+              <div class="full-width submit-row">
+                <button type="submit" class="btn-primary">
+                  🌾 Lancer la recommandation
+                </button>
+                <div class="hint">
+                  Le modèle utilise un Random Forest entraîné sur un historique
+                  de cultures et de conditions de sol.
+                </div>
+              </div>
+            </form>
+          </div>
+
           <!-- Carte 2 : Résultat / interprétation -->
-          <div class="card">
+          <div class="card" id="result-card" style="display: none">
             <div class="pill">📊 Résultat et explications</div>
             <div id="result" class="result" style="margin-top: 1rem">
               <div class="result-title">
@@ -415,6 +534,7 @@
       const rainEl = document.getElementById("result-rain");
       const statusEl = document.getElementById("status");
       const placeholderEl = document.getElementById("result-placeholder");
+      const resultCard = document.getElementById("result-card");
 
       // Gestion du wizard (next / previous) – uniquement guide texte
       const steps = document.querySelectorAll(".wizard-step");
@@ -476,6 +596,7 @@
         statusEl.classList.remove("error");
         statusEl.innerHTML =
           '<div class="status-dot"></div><span>Prédiction en cours, merci de patienter…</span>';
+        resultCard.style.display = "block";
         resultBox.classList.add("visible");
         placeholderEl.style.display = "none";
 

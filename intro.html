@@ -5,6 +5,14 @@
     <title>TerraSense - Introduction</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/static/intro.css" />
+    <script>
+      (function () {
+        const ok = localStorage.getItem("terrasense-auth");
+        if (!ok && window.location.pathname !== "/signin") {
+          window.location.replace("/signin");
+        }
+      })();
+    </script>
   </head>
   <body>
     <div class="page-bg" aria-hidden="true">
@@ -27,7 +35,7 @@
             </div>
           </div>
           <nav class="nav-links">
-            <a href="/" class="nav-link">Home</a>
+            <a href="/home" class="nav-link">Home</a>
             <a href="/agriculture" class="nav-link">Agriculture</a>
             <a href="/air" class="nav-link">Air</a>
             <a href="/water" class="nav-link">Water</a>

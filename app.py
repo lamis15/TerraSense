@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, redirect
 from flask_cors import CORS
 import joblib
 import numpy as np
@@ -30,6 +30,11 @@ except Exception:
 
 @app.route("/")
 def home():
+    # Redirige vers la page de connexion par défaut
+    return redirect("/signin")
+
+@app.route("/home")
+def home_page():
     """Renvoie la page web principale TerraSense."""
     with open("index.html", "r", encoding="utf-8") as f:
         return f.read()
@@ -38,6 +43,13 @@ def home():
 def intro_page():
     """Page d'introduction TerraSense."""
     with open("intro.html", "r", encoding="utf-8") as f:
+        return f.read()
+
+
+@app.route("/signin")
+def signin_page():
+    """Page de connexion TerraSense (compte démo statique)."""
+    with open("signin.html", "r", encoding="utf-8") as f:
         return f.read()
 
 

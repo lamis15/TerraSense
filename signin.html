@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TerraSense - Connexion</title>
+    <link rel="stylesheet" href="/static/signin.css" />
+  </head>
+  <body>
+    <div class="page-bg" aria-hidden="true">
+      <video class="bg-video" autoplay muted loop playsinline poster="/static/media/home-env.jpg">
+        <source src="/static/media/home-env.mp4" type="video/mp4" />
+      </video>
+      <div class="page-overlay"></div>
+    </div>
+
+    <div class="page">
+      <header>
+        <div class="navbar">
+          <div class="brand">
+            <div class="brand-icon">
+              <img src="/images-agricultures/logo.png" alt="Logo TerraSense" />
+            </div>
+            <div>
+              <div class="brand-text-main">TerraSense</div>
+              <div class="brand-text-sub">Intelligence pour la Terre</div>
+            </div>
+          </div>
+          <nav class="nav-links">
+            <a href="/home" class="nav-link">Home</a>
+            <a href="/agriculture" class="nav-link">Agriculture</a>
+            <a href="/air" class="nav-link">Air</a>
+            <a href="/water" class="nav-link">Water</a>
+          </nav>
+        </div>
+      </header>
+
+      <main class="content">
+        <div class="card auth-card">
+          <div class="pill">Espace sécurisé</div>
+          <h1>Connexion</h1>
+          <p class="tagline">
+            Utilisez vos identifiants pour accéder à TerraSense.
+          </p>
+
+          <form id="signin-form" class="form">
+            <label>
+              Email
+              <input type="email" id="email" name="email" placeholder="Votre email" required />
+            </label>
+            <label>
+              Mot de passe
+              <input type="password" id="password" name="password" placeholder="Votre mot de passe" required />
+            </label>
+            <button type="submit" class="btn-primary">Se connecter</button>
+            <div id="message" class="message" role="status"></div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        const form = document.getElementById("signin-form");
+        const msg = document.getElementById("message");
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          // Accepte toute combinaison pour cette démo
+          localStorage.setItem("terrasense-auth", "ok");
+          msg.textContent = "Connexion réussie, redirection...";
+          msg.className = "message success";
+          setTimeout(() => {
+            window.location.href = "/home";
+          }, 600);
+        });
+      })();
+    </script>
+  </body>
+</html>

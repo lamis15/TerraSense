@@ -5,6 +5,14 @@
     <title>TerraSense - Qualite de l'eau</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/static/water.css" />
+    <script>
+      (function () {
+        const ok = localStorage.getItem("terrasense-auth");
+        if (!ok && window.location.pathname !== "/signin") {
+          window.location.replace("/signin");
+        }
+      })();
+    </script>
   </head>
   <body>
     <div class="page-bg" aria-hidden="true">
@@ -16,17 +24,17 @@
     <div class="page">
       <header>
         <div class="navbar">
-          <div class="brand" onclick="window.location.href='/'">
+          <div class="brand">
             <div class="brand-icon">
               <img src="/images-agricultures/logo.png" alt="Logo TerraSense" />
             </div>
             <div>
               <div class="brand-text-main">TerraSense</div>
-              <div class="brand-text-sub">Module qualite de l'eau</div>
+              <div class="brand-text-sub">Intelligence pour la Terre</div>
             </div>
           </div>
           <nav class="nav-links">
-            <a href="/" class="nav-link">Home</a>
+            <a href="/home" class="nav-link">Home</a>
             <a href="/agriculture" class="nav-link">Agriculture</a>
             <a href="/air" class="nav-link">Air</a>
             <a href="/water" class="nav-link">Water</a>
@@ -69,8 +77,144 @@
 
         <section class="panel">
           <div class="layout">
-            <div class="card">
-              <div class="pill">Parametres de l'eau</div>
+            <div class="card" id="water-guide-card">
+              <div class="pill">Guide des parametres</div>
+              <div style="margin-top: 0.6rem; font-size: 0.86rem; color: var(--text-muted)">
+                Avant de saisir vos donnees, parcourez ce guide pour comprendre
+                a quoi sert chaque information.
+              </div>
+
+              <div class="wizard-steps">
+                <div
+                  class="wizard-step-indicator active"
+                  id="water-indicator-step-1"
+                ></div>
+                <div class="wizard-step-indicator" id="water-indicator-step-2"></div>
+                <div class="wizard-step-indicator" id="water-indicator-step-3"></div>
+              </div>
+              <div class="wizard-labels">
+                <span>Chimie de base</span>
+                <span>Contaminants</span>
+                <span>Resume</span>
+              </div>
+
+              <div class="wizard-step active" data-step="1">
+                <h3 style="margin: 0 0 0.4rem; font-size: 1rem">
+                  1. Parametres physico-chimiques
+                </h3>
+                <ul
+                  style="
+                    padding-left: 1.1rem;
+                    margin: 0.3rem 0;
+                    font-size: 0.86rem;
+                    color: var(--text-muted);
+                  "
+                >
+                  <li><strong>pH</strong> : acidite ou basicite.</li>
+                  <li><strong>Hardness</strong> et <strong>Solids</strong> : mineraux dissous.</li>
+                  <li><strong>Conductivity</strong> : mineralisation globale.</li>
+                </ul>
+
+                <div class="mini-illustration">
+                  <img
+                    class="guide-image"
+                    src="/static/media/water.jpg"
+                    alt="Analyse de l'eau"
+                  />
+                  <div class="mini-illustration-text">
+                    Illustration de <strong>tests de base</strong> pour la qualite de l'eau.
+                  </div>
+                </div>
+
+                <div class="wizard-actions">
+                  <span class="hint">Etape 1/3 - Etat chimique general.</span>
+                  <button type="button" class="btn-primary" id="water-next-step-1">
+                    Suivant
+                  </button>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step="2">
+                <h3 style="margin: 0 0 0.4rem; font-size: 1rem">
+                  2. Contaminants et particules
+                </h3>
+                <ul
+                  style="
+                    padding-left: 1.1rem;
+                    margin: 0.3rem 0;
+                    font-size: 0.86rem;
+                    color: var(--text-muted);
+                  "
+                >
+                  <li><strong>Chloramines</strong> et <strong>Sulfate</strong> : traitement et ions.</li>
+                  <li><strong>Organic carbon</strong> et <strong>Trihalomethanes</strong> : matiere organique.</li>
+                  <li><strong>Turbidity</strong> : particules en suspension.</li>
+                </ul>
+
+                <div class="mini-illustration">
+                  <img
+                    class="guide-image"
+                    src="/static/media/water.jpg"
+                    alt="Pollution de l'eau"
+                  />
+                  <div class="mini-illustration-text">
+                    Illustration des <strong>contaminants</strong> et de la turbidite.
+                  </div>
+                </div>
+
+                <div class="wizard-actions">
+                  <button type="button" class="btn-secondary" id="water-prev-step-2">
+                    Retour
+                  </button>
+                  <button type="button" class="btn-primary" id="water-next-step-2">
+                    Suivant
+                  </button>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step="3">
+                <h3 style="margin: 0 0 0.4rem; font-size: 1rem">
+                  3. Vue d'ensemble
+                </h3>
+                <div
+                  style="
+                    font-size: 0.86rem;
+                    color: var(--text-muted);
+                    margin-bottom: 0.6rem;
+                  "
+                >
+                  Le modele combine ces parametres pour indiquer si l'eau est
+                  <strong>Potable</strong> ou <strong>Non potable</strong>.
+                </div>
+
+                <div class="mini-illustration">
+                  <img
+                    class="guide-image"
+                    src="/static/media/home-env.jpg"
+                    alt="Evaluation globale de l'eau"
+                  />
+                  <div class="mini-illustration-text">
+                    Synthese des <strong>mesures combinees</strong> avant decision.
+                  </div>
+                </div>
+
+                <div class="wizard-actions">
+                  <button type="button" class="btn-secondary" id="water-prev-step-3">
+                    Retour
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-primary"
+                    id="water-show-form-button"
+                  >
+                    Passer a la saisie des parametres
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" id="water-form-card" style="margin-top: 1.8rem; display: none">
+              <div class="pill">Saisie des parametres</div>
               <form id="water-form" class="form-grid" style="margin-top: 1.3rem">
                 <div class="field">
                   <label for="ph">pH</label>
@@ -185,7 +329,7 @@
               </form>
             </div>
 
-            <div class="card">
+            <div class="card" id="water-result-card" style="display: none">
               <div class="pill">Resultat</div>
               <div id="water-result" class="result" style="margin-top: 1rem; display: none;">
                 <div id="water-result-box" class="result-box">
@@ -241,6 +385,49 @@
       const waterLevelEl = document.getElementById("water-level");
       const waterExplanationEl = document.getElementById("water-explanation");
       const waterIcon = document.getElementById("water-icon");
+      const waterFormCard = document.getElementById("water-form-card");
+      const waterResultCard = document.getElementById("water-result-card");
+
+      const waterSteps = document.querySelectorAll("#water-guide-card .wizard-step");
+      const waterIndicators = [
+        document.getElementById("water-indicator-step-1"),
+        document.getElementById("water-indicator-step-2"),
+        document.getElementById("water-indicator-step-3"),
+      ];
+      let waterCurrentStep = 0;
+
+      function showWaterStep(index) {
+        waterSteps.forEach((step, i) => {
+          step.classList.toggle("active", i === index);
+        });
+        waterIndicators.forEach((ind, i) => {
+          ind.classList.toggle("active", i <= index);
+        });
+        waterCurrentStep = index;
+      }
+
+      document
+        .getElementById("water-next-step-1")
+        .addEventListener("click", () => showWaterStep(1));
+      document
+        .getElementById("water-next-step-2")
+        .addEventListener("click", () => showWaterStep(2));
+      document
+        .getElementById("water-prev-step-2")
+        .addEventListener("click", () => showWaterStep(0));
+      document
+        .getElementById("water-prev-step-3")
+        .addEventListener("click", () => showWaterStep(1));
+
+      document
+        .getElementById("water-show-form-button")
+        .addEventListener("click", () => {
+          waterFormCard.style.display = "block";
+          window.scrollTo({
+            top: waterFormCard.offsetTop - 80,
+            behavior: "smooth",
+          });
+        });
 
       waterForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -258,6 +445,7 @@
         };
 
         waterResultPlaceholder.style.display = "none";
+        waterResultCard.style.display = "block";
         waterResult.style.display = "block";
         waterResultBox.className = "result-box result-loading";
         waterIcon.innerHTML = '<div class="loading-spinner"></div>';

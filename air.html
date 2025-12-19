@@ -5,6 +5,14 @@
     <title>TerraSense - Qualite de l'air</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/static/air.css" />
+    <script>
+      (function () {
+        const ok = localStorage.getItem("terrasense-auth");
+        if (!ok && window.location.pathname !== "/signin") {
+          window.location.replace("/signin");
+        }
+      })();
+    </script>
   </head>
       <body>
         <div class="page-bg" aria-hidden="true">
@@ -16,17 +24,17 @@
     <div class="page">
       <header>
         <div class="navbar">
-          <div class="brand" onclick="window.location.href='/'">
+          <div class="brand">
             <div class="brand-icon">
               <img src="/images-agricultures/logo.png" alt="Logo TerraSense" />
             </div>
             <div>
               <div class="brand-text-main">TerraSense</div>
-              <div class="brand-text-sub">Module qualite de l'air</div>
+              <div class="brand-text-sub">Intelligence pour la Terre</div>
             </div>
           </div>
           <nav class="nav-links">
-            <a href="/" class="nav-link">Home</a>
+            <a href="/home" class="nav-link">Home</a>
             <a href="/agriculture" class="nav-link">Agriculture</a>
             <a href="/air" class="nav-link">Air</a>
             <a href="/water" class="nav-link">Water</a>
@@ -79,8 +87,144 @@
 
         <section class="panel">
           <div class="layout">
-            <div class="card">
-              <div class="pill">Mesures issues des capteurs</div>
+            <div class="card" id="air-guide-card">
+              <div class="pill">Guide des parametres</div>
+              <div style="margin-top: 0.6rem; font-size: 0.86rem; color: var(--text-muted)">
+                Avant de saisir vos donnees, parcourez ce petit guide pour comprendre
+                a quoi sert chaque mesure.
+              </div>
+
+              <div class="wizard-steps">
+                <div
+                  class="wizard-step-indicator active"
+                  id="air-indicator-step-1"
+                ></div>
+                <div class="wizard-step-indicator" id="air-indicator-step-2"></div>
+                <div class="wizard-step-indicator" id="air-indicator-step-3"></div>
+              </div>
+              <div class="wizard-labels">
+                <span>Capteurs CO/NMHC</span>
+                <span>NOx & O3</span>
+                <span>Resume</span>
+              </div>
+
+              <div class="wizard-step active" data-step="1">
+                <h3 style="margin: 0 0 0.4rem; font-size: 1rem">
+                  1. Capteurs primaires (CO, NMHC, C6H6)
+                </h3>
+                <ul
+                  style="
+                    padding-left: 1.1rem;
+                    margin: 0.3rem 0;
+                    font-size: 0.86rem;
+                    color: var(--text-muted);
+                  "
+                >
+                  <li><strong>PT08.S1(CO)</strong> : trace le monoxyde de carbone.</li>
+                  <li><strong>NMHC(GT)</strong> et <strong>C6H6(GT)</strong> : hydrocarbures.</li>
+                  <li><strong>PT08.S2(NMHC)</strong> : capteur associe aux NMHC.</li>
+                </ul>
+
+                <div class="mini-illustration">
+                  <img
+                    class="guide-image"
+                    src="/static/media/home-env.jpg"
+                    alt="Paysage representant la qualite de l'air"
+                  />
+                  <div class="mini-illustration-text">
+                    Illustration d'un <strong>environnement a ciel ouvert</strong> pour visualiser la qualite de l'air.
+                  </div>
+                </div>
+
+                <div class="wizard-actions">
+                  <span class="hint">Etape 1/3 - Mesures de base.</span>
+                  <button type="button" class="btn-primary" id="air-next-step-1">
+                    Suivant
+                  </button>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step="2">
+                <h3 style="margin: 0 0 0.4rem; font-size: 1rem">
+                  2. Oxydes d'azote et ozone
+                </h3>
+                <ul
+                  style="
+                    padding-left: 1.1rem;
+                    margin: 0.3rem 0;
+                    font-size: 0.86rem;
+                    color: var(--text-muted);
+                  "
+                >
+                  <li><strong>NOx(GT)</strong> et <strong>NO2(GT)</strong> : pollution automobile.</li>
+                  <li><strong>PT08.S3(NOx)</strong> et <strong>PT08.S4(NO2)</strong> : capteurs relies.</li>
+                  <li><strong>PT08.S5(O3)</strong> : ozone et photochimie.</li>
+                </ul>
+
+                <div class="mini-illustration">
+                  <img
+                    class="guide-image"
+                    src="/static/media/home-env.jpg"
+                    alt="Qualite de l'air en milieu naturel"
+                  />
+                  <div class="mini-illustration-text">
+                    Illustration d'un <strong>milieu naturel</strong> pour comprendre NOx et O3.
+                  </div>
+                </div>
+
+                <div class="wizard-actions">
+                  <button type="button" class="btn-secondary" id="air-prev-step-2">
+                    Retour
+                  </button>
+                  <button type="button" class="btn-primary" id="air-next-step-2">
+                    Suivant
+                  </button>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step="3">
+                <h3 style="margin: 0 0 0.4rem; font-size: 1rem">
+                  3. Vue d'ensemble
+                </h3>
+                <div
+                  style="
+                    font-size: 0.86rem;
+                    color: var(--text-muted);
+                    margin-bottom: 0.6rem;
+                  "
+                >
+                  Le modele combine toutes les mesures pour classer le niveau de
+                  pollution en <strong>Bas</strong>, <strong>Moyen</strong> ou <strong>Eleve</strong>.
+                </div>
+
+                <div class="mini-illustration">
+                  <img
+                    class="guide-image"
+                    src="/static/media/home-env.jpg"
+                    alt="Vue d'ensemble de la qualite de l'air"
+                  />
+                  <div class="mini-illustration-text">
+                    Synthese des <strong>indicateurs combines</strong> pour la decision finale.
+                  </div>
+                </div>
+
+                <div class="wizard-actions">
+                  <button type="button" class="btn-secondary" id="air-prev-step-3">
+                    Retour
+                  </button>
+                  <button
+                    type="button"
+                    class="btn-primary"
+                    id="air-show-form-button"
+                  >
+                    Passer a la saisie des mesures
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" id="air-form-card" style="margin-top: 1.8rem; display: none">
+              <div class="pill">Saisie des mesures</div>
               <form id="air-form" class="form-grid" style="margin-top: 1.3rem">
                 <div class="field">
                   <label for="PT08.S1(CO)">PT08.S1(CO)</label>
@@ -202,7 +346,7 @@
               </form>
             </div>
 
-            <div class="card">
+            <div class="card" id="air-result-card" style="display: none">
               <div class="pill">Resultat</div>
               <div id="air-result" class="result" style="margin-top: 1rem">
                 <div class="result-title">
@@ -280,6 +424,49 @@
       const airLevelEl = document.getElementById("air-level");
       const airExplanationEl = document.getElementById("air-explanation");
       const airStatusEl = document.getElementById("air-status");
+      const airFormCard = document.getElementById("air-form-card");
+      const airResultCard = document.getElementById("air-result-card");
+
+      const airSteps = document.querySelectorAll("#air-guide-card .wizard-step");
+      const airIndicators = [
+        document.getElementById("air-indicator-step-1"),
+        document.getElementById("air-indicator-step-2"),
+        document.getElementById("air-indicator-step-3"),
+      ];
+      let airCurrentStep = 0;
+
+      function showAirStep(index) {
+        airSteps.forEach((step, i) => {
+          step.classList.toggle("active", i === index);
+        });
+        airIndicators.forEach((ind, i) => {
+          ind.classList.toggle("active", i <= index);
+        });
+        airCurrentStep = index;
+      }
+
+      document
+        .getElementById("air-next-step-1")
+        .addEventListener("click", () => showAirStep(1));
+      document
+        .getElementById("air-next-step-2")
+        .addEventListener("click", () => showAirStep(2));
+      document
+        .getElementById("air-prev-step-2")
+        .addEventListener("click", () => showAirStep(0));
+      document
+        .getElementById("air-prev-step-3")
+        .addEventListener("click", () => showAirStep(1));
+
+      document
+        .getElementById("air-show-form-button")
+        .addEventListener("click", () => {
+          airFormCard.style.display = "block";
+          window.scrollTo({
+            top: airFormCard.offsetTop - 80,
+            behavior: "smooth",
+          });
+        });
 
       airForm.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -302,6 +489,7 @@
         airStatusEl.classList.remove("error");
         airStatusEl.innerHTML =
           '<div class="status-dot"></div><span>Calcul en cours...</span>';
+        airResultCard.style.display = "block";
         airResultBox.classList.add("visible");
         airResultPlaceholder.style.display = "none";
 

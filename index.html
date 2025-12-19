@@ -5,6 +5,15 @@
     <title>TerraSense - Air et Eau</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/static/index.css" />
+    <script>
+      // Redirige vers /signin si l'utilisateur n'est pas connecté (localStorage)
+      (function () {
+        const ok = localStorage.getItem("terrasense-auth");
+        if (!ok && window.location.pathname !== "/signin") {
+          window.location.href = "/signin";
+        }
+      })();
+    </script>
   </head>
       <body>
         <div class="page-bg" aria-hidden="true">
@@ -26,7 +35,7 @@
             </div>
           </div>
           <nav class="nav-links">
-            <a href="/" class="nav-link">Home</a>
+            <a href="/home" class="nav-link">Home</a>
             <a href="/agriculture" class="nav-link">Agriculture</a>
             <a href="/air" class="nav-link">Air</a>
             <a href="/water" class="nav-link">Water</a>
@@ -40,10 +49,7 @@
             <div class="hero-copy">
               <h1>TerraSense</h1>
               <p class="tagline">
-                Humans need to address environmental issues because they are no
-                longer a problem for one society but a global issue. If the
-                environment crumbles, then the possibility of our survival
-                decreases. We need to adapt the concept of sustainability.
+               Les humains doivent s’attaquer aux problèmes environnementaux, car ils ne concernent plus une seule société mais représentent désormais un enjeu mondial. Si l’environnement se dégrade, les chances de notre survie diminuent. Nous devons adopter le concept de durabilité.
               </p>
               <button
                 type="button"
